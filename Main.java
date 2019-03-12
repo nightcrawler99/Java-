@@ -1,155 +1,23 @@
 package com.company;
 
-
-import java.util.*;
-
 public class Main {
 
-
-    private static Scanner scanner=new Scanner(System.in);
-    private static Album album=new Album("Priest");
-    private static LinkedList<String>play=new LinkedList<String>();
     public static void main(String[] args) {
 
-        album.makeAlbum("Song1","12");
-        album.makeAlbum("Song2","12");
-        album.makeAlbum("Song3","12");
-        album.makeAlbum("Song4","12");
-        album.makeAlbum("Song5","12");
-        album.makeAlbum("Song6","12");
-        addSongsToPlaylist("Song1",play);
-        addSongsToPlaylist("Song2",play);
-        addSongsToPlaylist("Song3",play);
-        addSongsToPlaylist("Song4",play);
-        addSongsToPlaylist("Song5",play);
 
+        Meat meat=new Meat();
 
+        BreadRoll breadRoll=new BreadRoll("");
 
-        printPlayList(play);
-        playMusic(play);
+        Hamberger ham=new Hamberger(breadRoll,meat,"normal");
+        HealthyHamburger hamberger=new HealthyHamburger(breadRoll,meat);
+        DeluxHamburger deluxHamburger=new DeluxHamburger(breadRoll,meat);
+        double total=ham.getAddOnsCarrotPrice(1)+ham.getAddOnsLettucePrice(1)+ham.getAddOnsTomattoPrice(2)+
+                ham.getAddOnsOnionPrice(1)+ham.getMeat().totalSelection(1)+hamberger.getAddOnsCarrotPrice(1)+
+                hamberger.getAddOnsCheesePrice(1)+deluxHamburger.addOnsPrice()+deluxHamburger.getMeat().totalSelection(3)+
+                ham.whiteBredRollPrice(2)+hamberger.brownBreadPrice(3);
 
+        System.out.println("Total Bill: "+total +"$");
 
-
-
-
-    }
-
-    private static void addSongsToPlaylist(String title,LinkedList<String>linkedList){
-
-        if(album.findSong(title)!=null){
-            ListIterator<String>listIterator=linkedList.listIterator();
-            listIterator.add(title);
-        }else {
-                System.out.println("Song is not from this album");
-            }
-
-    }
-    private static void printPlayList(LinkedList<String>linkedList){
-        Iterator<String>i=linkedList.iterator();
-        while (i.hasNext()){
-            System.out.println("#"+i.next());
-        }
-    }
-    //** Error after implementing this part of the code*************//
-    private static void removeSongFromPlaylist(String title,LinkedList<String>linkedList){
-        ListIterator<String>listIterator=linkedList.listIterator();
-        while (listIterator.hasNext()){
-            int comparision=listIterator.next().compareTo(title);
-                if(comparision==0){
-                    listIterator.remove();
-                    System.out.println("Song removed from the list");
-                }
-
-            }
-
-
-    }
-//********************************************************************//
-    private static void menu(){
-        System.out.println("1: Menu \n"+ "2: Print playlist \n"+ "3: Reply \n"+
-                            "4: Next song \n"+ "5: Previous song \n"+ "6: Delete song from the playlist");
-    }
-
-    private static void playMusic(LinkedList<String>songs){
-
-        ListIterator<String>listIterator=songs.listIterator();
-        boolean quit=false;
-        boolean goingForward=true;
-        while (!quit){
-            System.out.println("Enter 1 to get menu");
-            int options=scanner.nextInt();
-            scanner.nextLine();
-            switch (options){
-                case 0:
-                    quit=true;
-                    break;
-                case 1:
-                    menu();
-                    break;
-                case 2:
-                    printPlayList(play);
-                    break;
-                case 3:
-                    if(!goingForward){
-                        if(listIterator.hasNext()) {
-                            listIterator.next();
-                        }
-                        goingForward=true;
-                    }
-
-                    if(listIterator.hasPrevious()){
-                        System.out.println("Replaying song "+listIterator.previous());
-                        listIterator.next();
-                    }else{
-                        System.out.println("No more songs");
-                    }
-                    break;
-                case 4:
-                    if(!goingForward){
-                        if(listIterator.hasNext()){
-                            listIterator.next();
-                        }
-                        goingForward=true;
-                    }
-                    if(listIterator.hasNext()){
-                        System.out.println("Now playing "+ listIterator.next());
-                    }else {
-                        System.out.println("End of the playlist");
-                        goingForward=false;
-                    }
-                    break;
-                case 5:
-                    if(goingForward){
-                       if(listIterator.hasPrevious()){
-                           listIterator.previous();
-                       }
-                       goingForward=false;
-                    }
-                    if(listIterator.hasPrevious()){
-                        System.out.println("Now playing "+listIterator.previous());
-                    }else {
-                        System.out.println("This is the 1st song in the playlist");
-                        goingForward=true;
-                    }
-                    break;
-                case 6:
-                   // System.out.println("Enter the name of the song you want remove");
-                    //removeSongFromPlaylist(scanner.nextLine(),play);
-                    //break;
-
-                    //****error****
-                    //**new solution but still one bug**error if press 6 before playing songs***//
-                    if(play.size()>0){
-                        listIterator.remove();
-                        if(listIterator.hasNext()){
-                            System.out.println("Now playing "+listIterator.next());
-                        }else if(listIterator.hasPrevious()){
-                            System.out.println("Now playing "+listIterator.previous());
-                        }
-                    }
-                    break;
-
-            }
-        }
     }
 }
