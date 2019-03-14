@@ -1,5 +1,36 @@
 package com.company;
 
+public abstract class Club {
+    private String name;
+
+    public Club(String name) {
+        this.name = name;
+    }
+
+}
+---------------------------------------------------------------------------------------------------------------------------------
+package com.company;
+
+public class EnglishClub extends Club {
+    public EnglishClub(String name) {
+        super(name);
+    }
+
+
+}
+---------------------------------------------------------------------------------------------------------------------------------
+package com.company;
+
+public class SpanishClub extends Club {
+    public SpanishClub(String name) {
+        super(name);
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------
+package com.company;
+
+import java.util.ArrayList;
+
 public class Teams<T> implements Comparable<Teams<T>>{
 
     private String name;
@@ -7,6 +38,8 @@ public class Teams<T> implements Comparable<Teams<T>>{
     private int won=0;
     private int lost=0;
     private int tied=0;
+
+    ArrayList<T>clubs=new ArrayList<>();
 
 
     public Teams(String name) {
@@ -17,6 +50,15 @@ public class Teams<T> implements Comparable<Teams<T>>{
         return name;
     }
 
+    public boolean addClub(T club){
+
+        if(clubs.contains(club)){
+            return false;
+        }else {
+            clubs.add(club);
+            return true;
+        }
+    }
     public void matchesPlayed(Teams<T> opponent,int homeScore,int awayScore){
 
 
@@ -56,7 +98,7 @@ public class Teams<T> implements Comparable<Teams<T>>{
         }
     }
 }
-----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
 package com.company;
 
 import java.util.AbstractList;
@@ -98,7 +140,7 @@ public class Leagues<T extends Teams>{
 
 
 }
--------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
 package com.company;
 
 
@@ -106,13 +148,15 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-	
 
-        Leagues epl=new Leagues("Premier League");
-        Teams arsenal=new Teams("Arsenal");
-        Teams chelsea=new Teams("Chelsea");
-        Teams manu=new Teams("Manu");
-        Teams liverpool=new Teams("Liverpool");
+
+        Leagues<Teams<EnglishClub>> epl=new Leagues("Premier League");
+
+        Teams<EnglishClub> arsenal=new Teams("Arsenal");
+        Teams<EnglishClub> chelsea=new Teams("Chelsea");
+        Teams<EnglishClub> manu=new Teams("Manu");
+        Teams<EnglishClub> liverpool=new Teams("Liverpool");
+
 
 
         epl.addTeamToLeague(arsenal);
@@ -131,6 +175,26 @@ public class Main {
 
 
         epl.leagueTable();
+        System.out.println("********************");
+
+        Leagues<Teams<SpanishClub>>laliga=new Leagues<>("La Liga");
+
+        Teams<SpanishClub> realMadrid=new Teams<>("Real Madrid");
+        Teams<SpanishClub> atletcoMadrid=new Teams<>("Atletico Madrid");
+        Teams<SpanishClub> barcelona=new Teams<>("Barcelona");
+        Teams<SpanishClub> valencia=new Teams<>("Valencia");
+
+        laliga.addTeamToLeague(realMadrid);
+        laliga.addTeamToLeague(barcelona);
+        laliga.addTeamToLeague(valencia);
+        laliga.addTeamToLeague(atletcoMadrid);
+
+        realMadrid.matchesPlayed(atletcoMadrid,1,1);
+        barcelona.matchesPlayed(valencia,4,0);
+        valencia.matchesPlayed(realMadrid,1,1);
+        atletcoMadrid.matchesPlayed(barcelona,2,2);
+
+        laliga.leagueTable();
 
 
 
@@ -138,3 +202,14 @@ public class Main {
 
     }
 }
+-----------------------------------------------------------------------------------------------------------------------------------
+output
+Chelsea : 9
+Arsenal : 4
+Liverpool : 3
+Manu : 1
+********************
+Barcelona : 4
+Real Madrid : 2
+Atletico Madrid : 2
+Valencia : 1
